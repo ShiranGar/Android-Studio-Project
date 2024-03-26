@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Institutes" >
+        <item>HIT</item>
+        <item>Tel Aviv University</item>
+        <item>Hebrew University</item>
+        <item>Bar Ilan University</item>
+    </string-array>
+
+    <string-array name="Student_or_Admin" >
+        <item>Student</item>
+        <item>Admin</item>
+    </string-array>
+
+    <string-array name="Degrees" >
+        <item>Science</item>
+        <item>Design</item>
+        <item>Engineering</item>
+    </string-array>
+</resources>
