@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import com.example.finalappproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,12 +25,11 @@ import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StudentRegisterFragment#newInstance} factory method to
+ * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentRegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment {
     EditText etEmail, etPassword, edRepeatPassword;
-    MaterialAutoCompleteTextView autoCompleteTextView;
     MaterialButton btnRegister;
     FirebaseAuth mAuth;
     DatabaseReference databaseReference;
@@ -48,7 +44,7 @@ public class StudentRegisterFragment extends Fragment {
 //    private String mParam1;
 //    private String mParam2;
 
-    public StudentRegisterFragment() {
+    public RegisterFragment() {
         // Required empty public constructor
     }
 
@@ -61,8 +57,8 @@ public class StudentRegisterFragment extends Fragment {
      * @return A new instance of fragment StudentRegisterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentRegisterFragment newInstance(String param1, String param2) {
-        StudentRegisterFragment fragment = new StudentRegisterFragment();
+    public static RegisterFragment newInstance(String param1, String param2) {
+        RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -83,11 +79,10 @@ public class StudentRegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_register, container, false);
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
         edRepeatPassword = view.findViewById(R.id.etRepPassword);
-        autoCompleteTextView = view.findViewById(R.id.inputTV);
         btnRegister = view.findViewById(R.id.btnRegister);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +91,6 @@ public class StudentRegisterFragment extends Fragment {
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
                 String repeatPassword = edRepeatPassword.getText().toString().trim();
-                String institute = autoCompleteTextView.getText().toString().trim();
                 if (email.isEmpty()) {
                     Toast.makeText(getActivity(), "Email is required", Toast.LENGTH_SHORT).show();
                     etEmail.requestFocus();
@@ -115,11 +109,6 @@ public class StudentRegisterFragment extends Fragment {
                 if (!password.equals(repeatPassword)) {
                     Toast.makeText(getActivity(), "Password does not match", Toast.LENGTH_SHORT).show();
                     etPassword.requestFocus();
-                    return;
-                }
-                if (institute.isEmpty()) {
-                    Toast.makeText(getActivity(), "Course is required", Toast.LENGTH_SHORT).show();
-                    autoCompleteTextView.requestFocus();
                     return;
                 }
                 if(!isValidEmail(email)) {

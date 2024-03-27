@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.finalappproject.Fragments.LoginFragment;
-import com.example.finalappproject.Fragments.StudentRegisterFragment;
+import com.example.finalappproject.Fragments.RegisterFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,13 +18,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnRegisterStudent = (Button) findViewById(R.id.btnStudentFragment);
+        btnRegisterStudent = (Button) findViewById(R.id.btnRegisteration);
         btnRegisterStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnRegisterStudent.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
-                        new StudentRegisterFragment()).commit();
+                        new RegisterFragment()).commit();
             }
         });
 

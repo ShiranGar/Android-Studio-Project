@@ -179,6 +179,7 @@ public class AdminRegisterFragment extends Fragment {
 
     private void addDatatoFirebase(Student student) {
         HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userType","student");
         hashMap.put("email",student.getEmail());
         hashMap.put("name",student.getName());
         hashMap.put("country",student.getCountryAbroad());

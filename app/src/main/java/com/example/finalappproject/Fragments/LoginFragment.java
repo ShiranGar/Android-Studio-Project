@@ -2,14 +2,27 @@ package com.example.finalappproject.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.finalappproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +31,11 @@ import com.google.android.material.button.MaterialButton;
  */
 public class LoginFragment extends Fragment {
     MaterialButton btnLogin;
+    MaterialAutoCompleteTextView autoCompleteTextView;
+    DatabaseReference databaseReference;
+    EditText etEmail;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,13 +81,57 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        autoCompleteTextView = view.findViewById(R.id.inputTV);
         btnLogin = view.findViewById(R.id.btnLogin);
+        etEmail = view.findViewById(R.id.etEmail);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnLogin.setVisibility(View.GONE);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
-                        new AdminRegisterFragment()).commit();
+                if(autoCompleteTextView.getText().toString().equals("Student")) {
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                String userType = userSnapshot.child("userType").getValue(String.class);
+                                String userEmail = userSnapshot.child("email").getValue(String.class);
+                                if (userType.equals("student") && userEmail.equals(etEmail.getText().toString()))
+                                {
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
+                                            new StudentCategoriesFragment()).commit();
+                                    break;
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else if(autoCompleteTextView.getText().toString().equals("Admin"))
+                {
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                String userType = userSnapshot.child("userType").getValue(String.class);
+                                String userEmail = userSnapshot.child("email").getValue(String.class);
+                                if (userType.equals("admin") && userEmail.equals(etEmail.getText().toString()))
+                                {
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
+                                            new AdminRegisterFragment()).commit();
+                                    break;
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
         return view;

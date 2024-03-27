@@ -8,10 +8,10 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btnStudentFragment"
+        android:id="@+id/btnRegisteration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Student Registration" />
+        android:text="Register" />
 
     <Button
         android:id="@+id/btnLogin"
