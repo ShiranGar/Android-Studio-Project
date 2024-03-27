@@ -153,6 +153,7 @@ public class AdminRegisterFragment extends Fragment {
                             // The value exists
                             // You can access the value using dataSnapshot.getValue()
                         } else {
+
                             addDatatoFirebase(student);
                         }
                     }
