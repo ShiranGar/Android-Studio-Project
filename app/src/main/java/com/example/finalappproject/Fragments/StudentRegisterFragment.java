@@ -130,40 +130,37 @@ public class StudentRegisterFragment extends Fragment {
                     etPassword.requestFocus();
                     return;
                 }
-                databaseReference = FirebaseDatabase.getInstance().getReference("StudentsInfo");
-//                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for(DataSnapshot data: dataSnapshot.getChildren()){
-//                            if (data.child(email).exists()) {
-//                                Toast.makeText(getActivity(), "This email exsits", Toast.LENGTH_SHORT).show();
-//                                //do ur stuff
-//                            } else {
-//                                //do something if not exists
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//
-//                });
-//                mAuth.createUserWithEmailAndPassword(email, password)
-//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                if (task.isSuccessful()) {
-//                                    Toast.makeText(getActivity(), "Register success.",
-//                                            Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    // If sign in fails, display a message to the user.
-//                                    Toast.makeText(getActivity(), "Authentication failed.",
-//                                            Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
+                databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild("Users") && dataSnapshot.child("Users").hasChild(email.replace(".","")))
+                            {
+                                mAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getActivity(), "Register success.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // If sign in fails, display a message to the user.
+                                                    Toast.makeText(getActivity(), "Authentication failed.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(getActivity(), "This email is not exist in the system.", Toast.LENGTH_SHORT).show();
+                            }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
 
             }
         });

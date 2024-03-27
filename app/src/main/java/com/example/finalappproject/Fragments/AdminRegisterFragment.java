@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.finalappproject.R;
 import com.example.finalappproject.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -27,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 
 /**
@@ -142,57 +145,61 @@ public class AdminRegisterFragment extends Fragment {
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 databaseReference = firebaseDatabase.getReference();
                 student = new Student(name,email,country,institudeAbroad,institudeInIsrael,degreeInput);
-                fAuth.createUserWithEmailAndPassword(email,"123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            addDatatoFirebase(name,email,country,institudeAbroad,institudeInIsrael,degreeInput);
-                            Toast.makeText(getActivity(), "User created", Toast.LENGTH_SHORT).show();
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild("Users") && dataSnapshot.child("Users").hasChild(student.getEmail().replace(".","")))
+                        {    Toast.makeText(getActivity(), "User already exists", Toast.LENGTH_SHORT).show();
+                            // The value exists
+                            // You can access the value using dataSnapshot.getValue()
                         } else {
-                            Toast.makeText(getActivity(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            addDatatoFirebase(student);
                         }
                     }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 });
+//                fAuth.createUserWithEmailAndPassword(email,"123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if(task.isSuccessful()) {
+//                            addDatatoFirebase(name,email,country,institudeAbroad,institudeInIsrael,degreeInput);
+//                            Toast.makeText(getActivity(), "User created", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(getActivity(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
             }
         });
         return view;
     }
 
-    private void addDatatoFirebase(String name,String email,String country, String institudeAbroad,
-                                   String institudeInIsrael,String degreeInput) {
-        student.setName(name);
-        student.setEmail(email);
-        student.setCountryAbroad(country);
-        student.setInstitudeAbroad(institudeAbroad);
-        student.setInstitudeIsrael(institudeInIsrael);
-        student.setDegree(degreeInput);
-
-        // we are use add value event listener method
-        // which is called with database reference.
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // inside the method of on Data change we are setting
-                // our object class to our database reference.
-                // data base reference will sends data to firebase.
-                HashMap<String,String> hashMap = new HashMap<>();
-                hashMap.put("name",student.getName());
-                hashMap.put("email",student.getEmail());
-                hashMap.put("country",student.getCountryAbroad());
-                hashMap.put("institudeAbroad",student.getInstitudeAbroad());
-                hashMap.put("institudeIsrael",student.getInstitudeIsrael());
-                hashMap.put("degree",student.getDegree());
-                databaseReference.push().setValue(hashMap);
+    private void addDatatoFirebase(Student student) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("email",student.getEmail());
+        hashMap.put("name",student.getName());
+        hashMap.put("country",student.getCountryAbroad());
+        hashMap.put("institudeAbroad",student.getInstitudeAbroad());
+        hashMap.put("institudeIsrael",student.getInstitudeIsrael());
+        hashMap.put("degree",student.getDegree());
+        databaseReference.child("Users")
+                .child(student.getEmail().replace(".",""))
+                .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getActivity(), "data added", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Fail to add data " + e, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 // after adding this data we are showing toast message.
-                Toast.makeText(getActivity(), "data added", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // if the data is not added or it is cancelled then
-                // we are displaying a failure toast message.
-                Toast.makeText(getActivity(), "Fail to add data " + error, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        }
 }
