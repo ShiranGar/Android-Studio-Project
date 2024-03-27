@@ -117,29 +117,6 @@
                         android:drawableEnd="@drawable/password_icon"
                         android:inputType="textPassword" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/inputLayout"
-                        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                        android:layout_width="322dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:hint="Select"
-                        app:boxCornerRadiusBottomEnd="20sp"
-                        app:boxCornerRadiusBottomStart="20sp"
-                        app:boxCornerRadiusTopEnd="20sp"
-                        app:boxCornerRadiusTopStart="20sp"
-                        app:boxStrokeWidth="0sp"
-                        app:boxStrokeWidthFocused="0sp">
-
-                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/inputTV"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            app:simpleItems="@array/Institutes" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
                     <View
                         android:layout_width="wrap_content"
                         android:layout_height="10dp" />

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,7 @@ public class StudentRegisterFragment extends Fragment {
                 if (institute.isEmpty()) {
                     Toast.makeText(getActivity(), "Course is required", Toast.LENGTH_SHORT).show();
                     autoCompleteTextView.requestFocus();
+                    return;
                 }
                 if(!isValidEmail(email)) {
                     Toast.makeText(getActivity(), "Invalid email", Toast.LENGTH_SHORT).show();
@@ -134,34 +136,42 @@ public class StudentRegisterFragment extends Fragment {
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild("Users") && dataSnapshot.child("Users").hasChild(email.replace(".","")))
-                            {
-                                mAuth.createUserWithEmailAndPassword(email, password)
-                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(getActivity(), "Register success.",
-                                                            Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    // If sign in fails, display a message to the user.
-                                                    Toast.makeText(getActivity(), "Authentication failed.",
-                                                            Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                            } else {
-                                Toast.makeText(getActivity(), "This email is not exist in the system.", Toast.LENGTH_SHORT).show();
+                        boolean emailExists = false;
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            String userEmail = userSnapshot.child("email").getValue(String.class);
+                            if (userEmail != null && userEmail.equals(email)) {
+                                // Email exists in the database
+                                emailExists = true;
+                                break;
                             }
+                        }
+
+                        if (emailExists) {
+                            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "User created", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+//                            databaseReference.child(email.replace(".", "")).child("password").setValue(password);
+//                            Toast.makeText(getActivity(), "Email exists in the database.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Email does not exist, handle accordingly
+                            // For example:
+                            Toast.makeText(getActivity(), "Email does not exist in the database.", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle errors
+                        Toast.makeText(getActivity(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 });
-
             }
         });
         return view;

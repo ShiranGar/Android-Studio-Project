@@ -153,7 +153,6 @@ public class AdminRegisterFragment extends Fragment {
                             // The value exists
                             // You can access the value using dataSnapshot.getValue()
                         } else {
-
                             addDatatoFirebase(student);
                         }
                     }
@@ -167,7 +166,6 @@ public class AdminRegisterFragment extends Fragment {
 //                    @Override
 //                    public void onComplete(@NonNull Task<AuthResult> task) {
 //                        if(task.isSuccessful()) {
-//                            addDatatoFirebase(name,email,country,institudeAbroad,institudeInIsrael,degreeInput);
 //                            Toast.makeText(getActivity(), "User created", Toast.LENGTH_SHORT).show();
 //                        } else {
 //                            Toast.makeText(getActivity(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
