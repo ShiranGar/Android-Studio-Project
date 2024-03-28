@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         btnRegisterStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnLogin.setVisibility(View.GONE);
                 btnRegisterStudent.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
                         new RegisterFragment()).commit();

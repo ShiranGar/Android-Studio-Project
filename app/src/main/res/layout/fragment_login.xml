@@ -97,6 +97,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/password_icon"
