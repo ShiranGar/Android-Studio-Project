@@ -39,7 +39,7 @@ import java.util.Objects;
  */
 public class AdminRegisterFragment extends Fragment {
 
-    EditText etName, etEmail, etCountry, etAInstitudeAbroad;
+    EditText etName, etEmail, etCountry, etAInstitudeAbroad,etCity;
     MaterialAutoCompleteTextView degree,institudeIsrael;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
@@ -96,6 +96,7 @@ public class AdminRegisterFragment extends Fragment {
         etName = view.findViewById(R.id.etName);
         etEmail = view.findViewById(R.id.etEmail);
         etCountry = view.findViewById(R.id.etCountry);
+        etCity = view.findViewById(R.id.etCity);
         etAInstitudeAbroad = view.findViewById(R.id.etInstitudeAbroad);
         institudeIsrael = view.findViewById(R.id.inputInstituteIsrael);
         degree = view.findViewById(R.id.inputDegree);
@@ -109,13 +110,14 @@ public class AdminRegisterFragment extends Fragment {
                 String name = etName.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
                 String country = etCountry.getText().toString().trim();
+                String city = etCity.getText().toString().trim();
                 String institudeAbroad = etAInstitudeAbroad.getText().toString().trim();
                 String institudeInIsrael = institudeIsrael.getText().toString().trim();
                 String degreeInput = degree.getText().toString().trim();
 
                 if (name.isEmpty()) {
                     Toast.makeText(getActivity(), "Name is required", Toast.LENGTH_SHORT).show();
-                    etEmail.requestFocus();
+                    etName.requestFocus();
                     return;
                 }
                 if (email.isEmpty()) {
@@ -125,26 +127,31 @@ public class AdminRegisterFragment extends Fragment {
                 }
                 if (country.isEmpty()) {
                     Toast.makeText(getActivity(), "Country is required", Toast.LENGTH_SHORT).show();
-                    etEmail.requestFocus();
+                    etCountry.requestFocus();
+                    return;
+                }
+                if (city.isEmpty()) {
+                    Toast.makeText(getActivity(), "City is required", Toast.LENGTH_SHORT).show();
+                    etCity.requestFocus();
                     return;
                 }
                 if (institudeAbroad.isEmpty()) {
                     Toast.makeText(getActivity(), "Institude Abroad is required", Toast.LENGTH_SHORT).show();
-                    etEmail.requestFocus();
+                    etAInstitudeAbroad.requestFocus();
                     return;
                 }
                 if (institudeInIsrael.isEmpty()) {
                     Toast.makeText(getActivity(), "Institude in Israel is required", Toast.LENGTH_SHORT).show();
-                    etEmail.requestFocus();
+                    institudeIsrael.requestFocus();
                 }
                 if (degreeInput.isEmpty()) {
                     Toast.makeText(getActivity(), "Degree is required", Toast.LENGTH_SHORT).show();
-                    etEmail.requestFocus();
+                    degree.requestFocus();
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 databaseReference = firebaseDatabase.getReference();
-                student = new Student(name,email,country,institudeAbroad,institudeInIsrael,degreeInput);
+                student = new Student(name,email,institudeInIsrael,institudeAbroad,degreeInput,country,city);
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -180,18 +187,27 @@ public class AdminRegisterFragment extends Fragment {
     private void addDatatoFirebase(Student student) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userType","student");
-        hashMap.put("email",student.getEmail());
         hashMap.put("name",student.getName());
-        hashMap.put("country",student.getCountryAbroad());
-        hashMap.put("institudeAbroad",student.getInstitudeAbroad());
+        hashMap.put("email",student.getEmail());
         hashMap.put("institudeIsrael",student.getInstitudeIsrael());
+        hashMap.put("institudeAbroad",student.getInstitudeAbroad());
         hashMap.put("degree",student.getDegree());
+        hashMap.put("country",student.getCountryAbroad());
+        hashMap.put("city",student.getCity());
         databaseReference.child("Users")
                 .child(student.getEmail().replace(".",""))
                 .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getActivity(), "data added", Toast.LENGTH_SHORT).show();
+                        //clearing the fields
+                        etName.setText("");
+                        etEmail.setText("");
+                        etCountry.setText("");
+                        etCity.setText("");
+                        etAInstitudeAbroad.setText("");
+                        institudeIsrael.setText("");
+                        degree.setText("");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

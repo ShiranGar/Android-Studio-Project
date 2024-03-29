@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.finalappproject.R;
 
@@ -17,6 +18,7 @@ import com.example.finalappproject.R;
  */
 public class StudentCategoriesFragment extends Fragment {
 
+    Button btnOtherStudent;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -61,6 +63,15 @@ public class StudentCategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_student_categories, container, false);
+        View view = inflater.inflate(R.layout.fragment_student_categories, container, false);
+        btnOtherStudent = view.findViewById(R.id.btnOtherStudent);
+        btnOtherStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
+                        new OtherStudentsFragment()).commit();
+            }
+        });
+        return view;
     }
 }

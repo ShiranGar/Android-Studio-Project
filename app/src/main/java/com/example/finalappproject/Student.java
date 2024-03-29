@@ -8,15 +8,17 @@ public class Student {
     private String institudeAbroad;
     private String degree;
     private String countryAbroad;
+    private String city;
 
     public Student(String name, String email, String institudeIsrael, String institudeAbroad,
-                   String degree, String countryAbroad) {
+                   String degree, String countryAbroad, String city) {
         this.name = name;
         this.email = email;
         this.institudeIsrael = institudeIsrael;
         this.institudeAbroad = institudeAbroad;
         this.degree = degree;
         this.countryAbroad = countryAbroad;
+        this.city = city;
     }
 
     public String getName() {
@@ -53,6 +55,10 @@ public class Student {
 
     public String getInstitudeAbroad() {
         return institudeAbroad;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public void setInstitudeAbroad(String institudeAbroad) {
