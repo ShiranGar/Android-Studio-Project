@@ -4,18 +4,18 @@ public class Student {
     private String name;
     private String email;
     private String password;
-    private String institudeIsrael;
-    private String institudeAbroad;
+    private String instituteIsrael;
+    private String instituteAbroad;
     private String degree;
     private String countryAbroad;
     private String city;
 
-    public Student(String name, String email, String institudeIsrael, String institudeAbroad,
+    public Student(String name, String email, String instituteIsrael, String instituteAbroad,
                    String degree, String countryAbroad, String city) {
         this.name = name;
         this.email = email;
-        this.institudeIsrael = institudeIsrael;
-        this.institudeAbroad = institudeAbroad;
+        this.instituteIsrael = instituteIsrael;
+        this.instituteAbroad = instituteAbroad;
         this.degree = degree;
         this.countryAbroad = countryAbroad;
         this.city = city;
@@ -45,24 +45,24 @@ public class Student {
         this.password = password;
     }
 
-    public String getInstitudeIsrael() {
-        return institudeIsrael;
+    public String getInstituteIsrael() {
+        return instituteIsrael;
     }
 
-    public void setInstitudeIsrael(String institudeIsrael) {
-        this.institudeIsrael = institudeIsrael;
+    public void setInstituteIsrael(String instituteIsrael) {
+        this.instituteIsrael = instituteIsrael;
     }
 
-    public String getInstitudeAbroad() {
-        return institudeAbroad;
+    public String getInstituteAbroad() {
+        return instituteAbroad;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setInstitudeAbroad(String institudeAbroad) {
-        this.institudeAbroad = institudeAbroad;
+    public void setInstituteAbroad(String instituteAbroad) {
+        this.instituteAbroad = instituteAbroad;
     }
 
     public String getDegree() {

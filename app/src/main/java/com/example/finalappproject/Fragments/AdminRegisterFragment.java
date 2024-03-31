@@ -9,18 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.finalappproject.R;
 import com.example.finalappproject.Student;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 
 /**
@@ -42,7 +37,6 @@ public class AdminRegisterFragment extends Fragment {
     EditText etName, etEmail, etCountry, etAInstitudeAbroad,etCity;
     MaterialAutoCompleteTextView degree,institudeIsrael;
     FirebaseAuth fAuth;
-    ProgressBar progressBar;
     MaterialButton btnRegister;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -101,7 +95,6 @@ public class AdminRegisterFragment extends Fragment {
         institudeIsrael = view.findViewById(R.id.inputInstituteIsrael);
         degree = view.findViewById(R.id.inputDegree);
         btnRegister = view.findViewById(R.id.btnRegister);
-        progressBar = view.findViewById(R.id.progressBar);
         fAuth = FirebaseAuth.getInstance();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -136,19 +129,18 @@ public class AdminRegisterFragment extends Fragment {
                     return;
                 }
                 if (institudeAbroad.isEmpty()) {
-                    Toast.makeText(getActivity(), "Institude Abroad is required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Institute Abroad is required", Toast.LENGTH_SHORT).show();
                     etAInstitudeAbroad.requestFocus();
                     return;
                 }
                 if (institudeInIsrael.isEmpty()) {
-                    Toast.makeText(getActivity(), "Institude in Israel is required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Institute in Israel is required", Toast.LENGTH_SHORT).show();
                     institudeIsrael.requestFocus();
                 }
                 if (degreeInput.isEmpty()) {
                     Toast.makeText(getActivity(), "Degree is required", Toast.LENGTH_SHORT).show();
                     degree.requestFocus();
                 }
-                progressBar.setVisibility(View.VISIBLE);
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 databaseReference = firebaseDatabase.getReference();
                 student = new Student(name,email,institudeInIsrael,institudeAbroad,degreeInput,country,city);
@@ -189,8 +181,8 @@ public class AdminRegisterFragment extends Fragment {
         hashMap.put("userType","student");
         hashMap.put("name",student.getName());
         hashMap.put("email",student.getEmail());
-        hashMap.put("institudeIsrael",student.getInstitudeIsrael());
-        hashMap.put("institudeAbroad",student.getInstitudeAbroad());
+        hashMap.put("instituteIsrael",student.getInstituteIsrael());
+        hashMap.put("instituteAbroad",student.getInstituteAbroad());
         hashMap.put("degree",student.getDegree());
         hashMap.put("country",student.getCountryAbroad());
         hashMap.put("city",student.getCity());

@@ -6,13 +6,13 @@
     app:cardElevation="12dp"
     app:cardCornerRadius="12dp"
     android:layout_margin="16dp">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="vertical">
-        
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,12 +64,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Institude in Israel"
+                android:text="Institute Abroad"
                 android:textSize="24dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/studentISRInstitude"
+                android:id="@+id/studentAbroad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24dp"
@@ -86,12 +86,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Institude Abroad"
+                android:text="Country"
                 android:textSize="24dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/studentInstitudeAbroad"
+                android:id="@+id/country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24dp"

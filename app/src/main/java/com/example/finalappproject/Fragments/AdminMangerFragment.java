@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.finalappproject.Adapters.MyStudentAdapter;
+import com.example.finalappproject.Adapters.MyAdminAdapter;
 import com.example.finalappproject.R;
 import com.example.finalappproject.Student;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,10 +27,15 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OtherStudentsFragment#newInstance} factory method to
+ * Use the {@link AdminMangerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OtherStudentsFragment extends Fragment {
+public class AdminMangerFragment extends Fragment {
+
+    RecyclerView recyclerView;
+    ArrayList<Student> list;
+    DatabaseReference reference;
+    MyAdminAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,12 +46,7 @@ public class OtherStudentsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    RecyclerView recyclerView;
-    ArrayList<Student> list;
-    DatabaseReference reference;
-    MyStudentAdapter adapter;
-
-    public OtherStudentsFragment() {
+    public AdminMangerFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +56,11 @@ public class OtherStudentsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment OtherStudentsFragment.
+     * @return A new instance of fragment AdminMangerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OtherStudentsFragment newInstance(String param1, String param2) {
-        OtherStudentsFragment fragment = new OtherStudentsFragment();
+    public static AdminMangerFragment newInstance(String param1, String param2) {
+        AdminMangerFragment fragment = new AdminMangerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -81,32 +81,31 @@ public class OtherStudentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_other_students, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_manger, container, false);
         recyclerView = view.findViewById(R.id.recycleView);
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         list=new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyStudentAdapter(getContext(),list);
+        adapter = new MyAdminAdapter(getContext(),list);
         recyclerView.setAdapter(adapter);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                getCurrentUserCountry(new CountryCallback() {
+                getCurrentUserInstitude(new AdminMangerFragment.InstituteCallback() {
                     @Override
-                    public void onCountryReceived(String currentUserCountry) {
-                        Toast.makeText(getContext(), "current country: " + currentUserCountry, Toast.LENGTH_SHORT).show();
+                    public void onInstituteReceived(String institute) {
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                             String userType = dataSnapshot.child("userType").getValue(String.class);
-                            String userCountry = dataSnapshot.child("country").getValue(String.class);
-                            if(userType.equals("student") && userCountry.equals(currentUserCountry)) {
+                            String instituteIsrael = dataSnapshot.child("instituteIsrael").getValue(String.class);
+                            if(userType.equals("student") && instituteIsrael.equals(institute)) {
+                                String userCountry = dataSnapshot.child("country").getValue(String.class);
                                 String name = dataSnapshot.child("name").getValue(String.class);
                                 String email = dataSnapshot.child("email").getValue(String.class);
-                                String institudeIsrael = dataSnapshot.child("instituteIsrael").getValue(String.class);
-                                String institudeAbroad = dataSnapshot.child("instituteAbroad").getValue(String.class);
+                                String instituteAbroad = dataSnapshot.child("instituteAbroad").getValue(String.class);
                                 String degree = dataSnapshot.child("degree").getValue(String.class);
                                 String city = dataSnapshot.child("city").getValue(String.class);
-                                Student student = new Student(name,email,institudeIsrael,institudeAbroad,degree,userCountry,city);
+                                Student student = new Student(name,email,instituteIsrael,instituteAbroad,degree,userCountry,city);
                                 list.add(student);
                             }
                         }
@@ -129,12 +128,12 @@ public class OtherStudentsFragment extends Fragment {
         return view;
     }
 
-    public interface CountryCallback {
-        void onCountryReceived(String country);
+    public interface InstituteCallback {
+        void onInstituteReceived(String country);
         void onError(String message);
     }
 
-    private void getCurrentUserCountry(CountryCallback callback) {
+    private void getCurrentUserInstitude(AdminMangerFragment.InstituteCallback callback) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -146,12 +145,12 @@ public class OtherStudentsFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     String email = dataSnapshot.child("email").getValue(String.class).toLowerCase();
                     if (email.equals(currentUserEmail)) {
-                        String currentUserCountry = dataSnapshot.child("country").getValue(String.class);
-                        callback.onCountryReceived(currentUserCountry);
+                        String currentUserInstitute = dataSnapshot.child("instituteIsrael").getValue(String.class);
+                        callback.onInstituteReceived(currentUserInstitute);
                         return;
                     }
                 }
-                callback.onError("Country not found");
+                callback.onError("Institute not found");
             }
 
             @Override

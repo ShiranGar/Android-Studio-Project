@@ -40,6 +40,7 @@ public class LoginFragment extends Fragment {
     MaterialAutoCompleteTextView autoCompleteTextView;
     DatabaseReference databaseReference;
     EditText etEmail,etPassword;
+    Button btnBack;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -92,7 +93,14 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnLogin);
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
+        btnBack = view.findViewById(R.id.btnBack);
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to MainActivity
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +136,7 @@ public class LoginFragment extends Fragment {
                             } else if (userType.equals("admin")) {
                                 // Navigate to AdminRegisterFragment
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
-                                        new AdminRegisterFragment()).commit();
+                                        new AdminOptionsFragment()).commit();
                             }
                         } else {
                             Toast.makeText(getActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();
@@ -195,5 +203,6 @@ public class LoginFragment extends Fragment {
     public interface FirebaseCallback {
         void onCallback(boolean isSuccess);
     }
+
 
 }

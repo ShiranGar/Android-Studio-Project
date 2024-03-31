@@ -17,7 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/my_primary"
-            android:alpha="0.7"/>
+            android:alpha="0.7">
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
