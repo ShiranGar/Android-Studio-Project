@@ -98,7 +98,12 @@ public class LoginFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to MainActivity
+                //close the fragment
+                getActivity().getSupportFragmentManager().beginTransaction().remove(LoginFragment.this).commit();
+                //visible buttons in main activity
+                MainActivity.tvWelcome.setVisibility(View.VISIBLE);
+                MainActivity.btnRegisterStudent.setVisibility(View.VISIBLE);
+                MainActivity.btnLogin.setVisibility(View.VISIBLE);
             }
         });
 

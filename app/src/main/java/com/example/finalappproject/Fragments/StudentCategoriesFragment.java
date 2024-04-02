@@ -1,5 +1,6 @@
 package com.example.finalappproject.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.finalappproject.R;
+import com.example.finalappproject.StudentSharedFilesActivity;
+import com.example.finalappproject.UploadPDF;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +21,7 @@ import com.example.finalappproject.R;
  */
 public class StudentCategoriesFragment extends Fragment {
 
-    Button btnOtherStudent;
+    Button btnOtherStudent,btnStudies;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -65,11 +68,21 @@ public class StudentCategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student_categories, container, false);
         btnOtherStudent = view.findViewById(R.id.btnOtherStudent);
+        btnStudies = view.findViewById(R.id.btnStudies);
         btnOtherStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
                         new OtherStudentsFragment()).commit();
+            }
+        });
+
+        btnStudies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //move to activity upload pdf
+                Intent intent = new Intent(getActivity(), StudentSharedFilesActivity.class);
+                startActivity(intent);
             }
         });
         return view;

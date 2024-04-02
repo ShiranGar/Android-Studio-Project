@@ -16,7 +16,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/my_primary"
+            android:background="@color/purple_200"
             android:alpha="0.7"/>
 
         <LinearLayout

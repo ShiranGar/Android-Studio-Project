@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.finalappproject.MainActivity;
 import com.example.finalappproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +35,7 @@ public class RegisterFragment extends Fragment {
     MaterialButton btnRegister;
     FirebaseAuth mAuth;
     DatabaseReference databaseReference;
+    Button btnBackToMain;
 
 
 //    // TODO: Rename parameter arguments, choose names that match
@@ -84,6 +87,7 @@ public class RegisterFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
         edRepeatPassword = view.findViewById(R.id.etRepPassword);
         btnRegister = view.findViewById(R.id.btnRegister);
+        btnBackToMain = view.findViewById(R.id.btnBackToMain);
         mAuth = FirebaseAuth.getInstance();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +165,17 @@ public class RegisterFragment extends Fragment {
                         Toast.makeText(getActivity(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        btnBackToMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(RegisterFragment.this).commit();
+                //visible buttons in main activity
+                MainActivity.tvWelcome.setVisibility(View.VISIBLE);
+                MainActivity.btnRegisterStudent.setVisibility(View.VISIBLE);
+                MainActivity.btnLogin.setVisibility(View.VISIBLE);
             }
         });
         return view;

@@ -13,7 +13,7 @@
         android:text="Students from my country" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnStudies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"

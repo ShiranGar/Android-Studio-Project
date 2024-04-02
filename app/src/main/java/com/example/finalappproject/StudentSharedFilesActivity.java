@@ -19,9 +19,9 @@ public class StudentSharedFilesActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StudentSharedFilesActivity.this,UploadPDF.class);
+                Intent intent = new Intent(getApplicationContext(),UploadPDF.class);
                 startActivity(intent);
             }
-        }
+        });
     }
 }
