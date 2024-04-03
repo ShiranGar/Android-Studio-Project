@@ -3,32 +3,34 @@ package com.example.finalappproject.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.finalappproject.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StudentCategoriesFragment#newInstance} factory method to
+ * Use the {@link LoginRegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentCategoriesFragment extends Fragment {
+public class LoginRegisterFragment extends Fragment {
+    Button btnRegisterStudent, btnLogin;
 
-    Button btnOtherStudent,btnStudies;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public StudentCategoriesFragment() {
+    public LoginRegisterFragment() {
         // Required empty public constructor
     }
 
@@ -38,14 +40,14 @@ public class StudentCategoriesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StudentCategoriesFragment.
+     * @return A new instance of fragment LoginRegisterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentCategoriesFragment newInstance(String param1, String param2) {
-        StudentCategoriesFragment fragment = new StudentCategoriesFragment();
+    public static LoginRegisterFragment newInstance(String param1, String param2) {
+        LoginRegisterFragment fragment = new LoginRegisterFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +56,8 @@ public class StudentCategoriesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -63,25 +65,25 @@ public class StudentCategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_categories, container, false);
-        btnOtherStudent = view.findViewById(R.id.btnOtherStudent);
-        btnStudies = view.findViewById(R.id.btnStudies);
-        btnOtherStudent.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_login_register, container, false);
+        btnRegisterStudent = (Button) view.findViewById(R.id.btnRegisteration);
+        btnRegisterStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
-                        new OtherStudentsFragment()).commit();
+                        new RegisterFragment()).commit();
             }
         });
 
-        btnStudies.setOnClickListener(new View.OnClickListener() {
+        btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //go to UploadPDFFragment
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
-                        new UploadPDFFragment()).commit();
+                        new LoginFragment()).commit();
             }
         });
+
         return view;
     }
 }

@@ -171,11 +171,9 @@ public class RegisterFragment extends Fragment {
         btnBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().remove(RegisterFragment.this).commit();
-                //visible buttons in main activity
-                MainActivity.tvWelcome.setVisibility(View.VISIBLE);
-                MainActivity.btnRegisterStudent.setVisibility(View.VISIBLE);
-                MainActivity.btnLogin.setVisibility(View.VISIBLE);
+                //go to loginRegisterFragment
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
+                        new LoginRegisterFragment()).commit();
             }
         });
         return view;

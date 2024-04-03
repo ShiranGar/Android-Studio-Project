@@ -7,23 +7,41 @@
     tools:context=".Fragments.StudentCategoriesFragment">
 
     <Button
+        android:paddingBottom="5dp"
         android:id="@+id/btnOtherStudent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Students from my country" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="Students from my country"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:background="@drawable/otherstudents"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"/>
 
     <Button
+        android:paddingBottom="40dp"
+        android:paddingLeft="10dp"
         android:id="@+id/btnStudies"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Studies" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="Studies"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:background="@drawable/studies"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"/>
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Fun" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="Fun"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:background="@drawable/fun"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        />
 
 </LinearLayout>
