@@ -1,9 +1,8 @@
-package com.example.finalappproject;
+package com.example.finalappproject.Classes;
 
 public class Student {
     private String name;
     private String email;
-    private String password;
     private String instituteIsrael;
     private String instituteAbroad;
     private String degree;
@@ -35,14 +34,6 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getInstituteIsrael() {

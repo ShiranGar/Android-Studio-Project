@@ -37,7 +37,6 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class LoginFragment extends Fragment {
     MaterialButton btnLogin;
-    MaterialAutoCompleteTextView autoCompleteTextView;
     DatabaseReference databaseReference;
     EditText etEmail,etPassword;
     Button btnBack;
@@ -89,7 +88,6 @@ public class LoginFragment extends Fragment {
         setupOnBackPressed();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        autoCompleteTextView = view.findViewById(R.id.inputTV);
         btnLogin = view.findViewById(R.id.btnLogin);
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
@@ -107,7 +105,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String email = etEmail.getText().toString().trim();
-                String userType = autoCompleteTextView.getText().toString().trim().toLowerCase();
                 String password = etPassword.getText().toString().trim();
 
                 if (email.isEmpty()) {
@@ -120,14 +117,9 @@ public class LoginFragment extends Fragment {
                     etPassword.requestFocus();
                     return;
                 }
-                if (userType.isEmpty()) {
-                    Toast.makeText(getActivity(), "Please select your user type", Toast.LENGTH_SHORT).show();
-                    autoCompleteTextView.requestFocus();
-                    return;
-                }
                 FirebaseCallback callback = new FirebaseCallback() {
                     @Override
-                    public void onCallback(boolean isSuccess) {
+                    public void onCallback(String userType, boolean isSuccess) {
                         if (isSuccess) {
                             Toast.makeText(getActivity(), "Authentication successful", Toast.LENGTH_SHORT).show();
                             if (userType.equals("student")) {
@@ -145,7 +137,7 @@ public class LoginFragment extends Fragment {
                     }
                 };
 
-                checkCredentials(email, password, userType, callback);
+                checkCredentials(email, password, callback);
             }
         });
 
@@ -161,22 +153,23 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void isUserExist(String email, String userInputType, FirebaseCallback callback) {
+    private void isUserExist(String email, FirebaseCallback callback) {
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 boolean isExist = false;
+                String userType = "";
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    String userType = userSnapshot.child("userType").getValue(String.class);
                     String userEmail = userSnapshot.child("email").getValue(String.class);
-                    if (userEmail.equals(email) && userType.equals(userInputType))
+                    if (userEmail.equals(email))
                     {
                         isExist = true;
+                        userType = userSnapshot.child("userType").getValue(String.class);
                         break;
                     }
                 }
-                callback.onCallback(isExist);
+                callback.onCallback(userType, isExist);
             }
 
             @Override
@@ -186,23 +179,23 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void checkCredentials(String email, String password, String userType, FirebaseCallback callback) {
+    private void checkCredentials(String email, String password, FirebaseCallback callback) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     boolean isSuccess = task.isSuccessful();
                     if (isSuccess) {
-                        isUserExist(email, userType, callback);
+                        isUserExist(email, callback);
                     } else {
-                        callback.onCallback(false); // Authentication failed
+                        callback.onCallback("",false); // Authentication failed
                     }
                 });
     }
 
 
     public interface FirebaseCallback {
-        void onCallback(boolean isSuccess);
+        void onCallback(String userType, boolean isSuccess);
     }
 
 

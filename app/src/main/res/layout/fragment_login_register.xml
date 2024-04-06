@@ -17,6 +17,7 @@
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="140dp"
+        android:textColor="@color/black"
         android:id="@+id/tvWelcome"/>
 
     <Button

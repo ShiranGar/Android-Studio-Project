@@ -66,7 +66,6 @@ public class AdminOptionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_options, container, false);
         btnRegisterStudent = view.findViewById(R.id.btnRegisterStudent);
         btnShowStudents = view.findViewById(R.id.btnShowStudents);
-
         btnRegisterStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

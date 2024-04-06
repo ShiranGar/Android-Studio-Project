@@ -35,19 +35,16 @@
             android:orientation="vertical"
             android:padding="28dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/location_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GO MAP"
+                android:text="Let's go for it!"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="32sp"
-                android:textColor="@color/white"/>
+                android:textSize="30sp"
+                android:gravity="center"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -63,7 +60,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="28dp">
+                    android:padding="28dp"
+                    android:background="@color/material_dynamic_tertiary90">
 
                     <TextView
                         android:layout_width="wrap_content"

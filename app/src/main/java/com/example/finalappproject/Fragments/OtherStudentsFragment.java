@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.finalappproject.Adapters.MyStudentAdapter;
 import com.example.finalappproject.R;
-import com.example.finalappproject.Student;
+import com.example.finalappproject.Classes.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +46,7 @@ public class OtherStudentsFragment extends Fragment {
     ArrayList<Student> list;
     DatabaseReference reference;
     MyStudentAdapter adapter;
+    Button btnBack;
 
     public OtherStudentsFragment() {
         // Required empty public constructor
@@ -82,31 +84,37 @@ public class OtherStudentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_other_students, container, false);
+        btnBack = view.findViewById(R.id.btnBack);
         recyclerView = view.findViewById(R.id.recycleView);
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         list=new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new MyStudentAdapter(getContext(),list);
         recyclerView.setAdapter(adapter);
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.mainConrtainer,new StudentCategoriesFragment()).commit();
+            }
+        });
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getCurrentUserCountry(new CountryCallback() {
                     @Override
                     public void onCountryReceived(String currentUserCountry) {
-                        Toast.makeText(getContext(), "current country: " + currentUserCountry, Toast.LENGTH_SHORT).show();
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                             String userType = dataSnapshot.child("userType").getValue(String.class);
                             String userCountry = dataSnapshot.child("country").getValue(String.class);
                             if(userType.equals("student") && userCountry.equals(currentUserCountry)) {
                                 String name = dataSnapshot.child("name").getValue(String.class);
                                 String email = dataSnapshot.child("email").getValue(String.class);
-                                String institudeIsrael = dataSnapshot.child("instituteIsrael").getValue(String.class);
-                                String institudeAbroad = dataSnapshot.child("instituteAbroad").getValue(String.class);
+                                String instituteIsrael = dataSnapshot.child("instituteIsrael").getValue(String.class);
+                                String instituteAbroad = dataSnapshot.child("instituteAbroad").getValue(String.class);
                                 String degree = dataSnapshot.child("degree").getValue(String.class);
                                 String city = dataSnapshot.child("city").getValue(String.class);
-                                Student student = new Student(name,email,institudeIsrael,institudeAbroad,degree,userCountry,city);
+                                Student student = new Student(name,email,instituteIsrael,instituteAbroad,degree,userCountry,city);
                                 list.add(student);
                             }
                         }

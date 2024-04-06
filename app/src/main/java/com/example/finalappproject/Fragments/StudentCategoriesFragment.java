@@ -18,7 +18,7 @@ import com.example.finalappproject.R;
  */
 public class StudentCategoriesFragment extends Fragment {
 
-    Button btnOtherStudent,btnStudies;
+    Button btnOtherStudent,btnStudies,btnFun;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -66,6 +66,7 @@ public class StudentCategoriesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_student_categories, container, false);
         btnOtherStudent = view.findViewById(R.id.btnOtherStudent);
         btnStudies = view.findViewById(R.id.btnStudies);
+        btnFun = view.findViewById(R.id.btnFun);
         btnOtherStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +81,15 @@ public class StudentCategoriesFragment extends Fragment {
                 //go to UploadPDFFragment
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
                         new UploadPDFFragment()).commit();
+            }
+        });
+
+        btnFun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //go to UploadImageFragment
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer,
+                        new UploadImageFragment()).commit();
             }
         });
         return view;

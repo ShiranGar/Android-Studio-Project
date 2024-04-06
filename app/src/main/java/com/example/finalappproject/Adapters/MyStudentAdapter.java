@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalappproject.R;
-import com.example.finalappproject.Student;
+import com.example.finalappproject.Classes.Student;
 
 import java.util.ArrayList;
 
@@ -51,8 +51,8 @@ public class MyStudentAdapter extends RecyclerView.Adapter<MyStudentAdapter.MyVi
             super(itemView);
             name = itemView.findViewById(R.id.name);
             email = itemView.findViewById(R.id.email);
-            institudeIsrael = itemView.findViewById(R.id.studentISRInstitude);
-            institudeAbroad = itemView.findViewById(R.id.studentInstitudeAbroad);
+            institudeIsrael = itemView.findViewById(R.id.studentISRInstitute);
+            institudeAbroad = itemView.findViewById(R.id.studentInstituteAbroad);
             city = itemView.findViewById(R.id.city);
             degree = itemView.findViewById(R.id.degree);
         }

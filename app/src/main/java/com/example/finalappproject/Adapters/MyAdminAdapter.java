@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalappproject.R;
-import com.example.finalappproject.Student;
+import com.example.finalappproject.Classes.Student;
 
 import java.util.ArrayList;
 

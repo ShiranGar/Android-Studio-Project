@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.UploadPDFFragment">
+    android:orientation="vertical"
+    tools:context=".Fragments.UploadPDFFragment"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/baseline_arrow_back_24" />
 
     <EditText
         android:id="@+id/editText"
@@ -14,17 +22,26 @@
         android:textColor="#0000FF"
         android:textStyle="bold" />
 
+    <EditText
+        android:id="@+id/etCourse"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="Please enter course name"
+        android:textColor="#0000FF"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btnUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/etCourse"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/editText"
         android:text="Upload PDF" />
+
 
     <Button
         android:id="@+id/btnRead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Retrieve PDF file" />
-</RelativeLayout>
+</LinearLayout>

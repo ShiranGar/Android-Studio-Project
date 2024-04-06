@@ -8,16 +8,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.finalappproject.R;
-import com.example.finalappproject.Student;
+import com.example.finalappproject.Classes.Student;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,13 +36,12 @@ import java.util.HashMap;
  */
 public class AdminRegisterFragment extends Fragment {
 
-    EditText etName, etEmail, etCountry, etAInstitudeAbroad,etCity;
-    MaterialAutoCompleteTextView degree,institudeIsrael;
+    EditText etName, etEmail, etCountry, etAInstituteAbroad,etCity;
+    MaterialAutoCompleteTextView degree;
     FirebaseAuth fAuth;
     MaterialButton btnRegister;
-    FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    Student student;
+    Button btnBack;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,15 +88,16 @@ public class AdminRegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_admin_register, container, false);
+        btnBack = view.findViewById(R.id.btnBack);
         etName = view.findViewById(R.id.etName);
         etEmail = view.findViewById(R.id.etEmail);
         etCountry = view.findViewById(R.id.etCountry);
         etCity = view.findViewById(R.id.etCity);
-        etAInstitudeAbroad = view.findViewById(R.id.etInstitudeAbroad);
-        institudeIsrael = view.findViewById(R.id.inputInstituteIsrael);
+        etAInstituteAbroad = view.findViewById(R.id.etInstitudeAbroad);
         degree = view.findViewById(R.id.inputDegree);
         btnRegister = view.findViewById(R.id.btnRegister);
         fAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +106,7 @@ public class AdminRegisterFragment extends Fragment {
                 String email = etEmail.getText().toString().trim();
                 String country = etCountry.getText().toString().trim();
                 String city = etCity.getText().toString().trim();
-                String institudeAbroad = etAInstitudeAbroad.getText().toString().trim();
-                String institudeInIsrael = institudeIsrael.getText().toString().trim();
+                String instituteAbroad = etAInstituteAbroad.getText().toString().trim();
                 String degreeInput = degree.getText().toString().trim();
 
                 if (name.isEmpty()) {
@@ -118,6 +119,11 @@ public class AdminRegisterFragment extends Fragment {
                     etEmail.requestFocus();
                     return;
                 }
+                if (instituteAbroad.isEmpty()) {
+                    Toast.makeText(getActivity(), "Institute Abroad is required", Toast.LENGTH_SHORT).show();
+                    etAInstituteAbroad.requestFocus();
+                    return;
+                }
                 if (country.isEmpty()) {
                     Toast.makeText(getActivity(), "Country is required", Toast.LENGTH_SHORT).show();
                     etCountry.requestFocus();
@@ -128,55 +134,49 @@ public class AdminRegisterFragment extends Fragment {
                     etCity.requestFocus();
                     return;
                 }
-                if (institudeAbroad.isEmpty()) {
-                    Toast.makeText(getActivity(), "Institute Abroad is required", Toast.LENGTH_SHORT).show();
-                    etAInstitudeAbroad.requestFocus();
-                    return;
-                }
-                if (institudeInIsrael.isEmpty()) {
-                    Toast.makeText(getActivity(), "Institute in Israel is required", Toast.LENGTH_SHORT).show();
-                    institudeIsrael.requestFocus();
-                }
                 if (degreeInput.isEmpty()) {
                     Toast.makeText(getActivity(), "Degree is required", Toast.LENGTH_SHORT).show();
                     degree.requestFocus();
+                    return;
                 }
-                firebaseDatabase = FirebaseDatabase.getInstance();
-                databaseReference = firebaseDatabase.getReference();
-                student = new Student(name,email,institudeInIsrael,institudeAbroad,degreeInput,country,city);
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                findAdminInstitute(new InstituteCallback() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild("Users") && dataSnapshot.child("Users").hasChild(student.getEmail().replace(".","")))
-                        {    Toast.makeText(getActivity(), "User already exists", Toast.LENGTH_SHORT).show();
-                            // The value exists
-                            // You can access the value using dataSnapshot.getValue()
-                        } else {
-                            addDatatoFirebase(student);
-                        }
+                    public void onInstituteReceived(String institute) {
+                        Student student = new Student(name, email, institute, instituteAbroad, degreeInput, country, city);
+                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.hasChild("Users") && dataSnapshot.child("Users").hasChild(student.getEmail().replace(".", ""))) {
+                                    Toast.makeText(getActivity(), "User already exists", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    addDataToFirebase(student);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(getActivity(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getActivity(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onError(String message) {
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
-//                fAuth.createUserWithEmailAndPassword(email,"123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if(task.isSuccessful()) {
-//                            Toast.makeText(getActivity(), "User created", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(getActivity(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainConrtainer, new AdminOptionsFragment()).commit();
             }
         });
         return view;
     }
 
-    private void addDatatoFirebase(Student student) {
+    private void addDataToFirebase(Student student) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userType","student");
         hashMap.put("name",student.getName());
@@ -191,15 +191,9 @@ public class AdminRegisterFragment extends Fragment {
                 .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        clearFields();
                         Toast.makeText(getActivity(), "data added", Toast.LENGTH_SHORT).show();
-                        //clearing the fields
-                        etName.setText("");
-                        etEmail.setText("");
-                        etCountry.setText("");
-                        etCity.setText("");
-                        etAInstitudeAbroad.setText("");
-                        institudeIsrael.setText("");
-                        degree.setText("");
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -210,4 +204,42 @@ public class AdminRegisterFragment extends Fragment {
                 });
                 // after adding this data we are showing toast message.
         }
+    public interface InstituteCallback {
+        void onInstituteReceived(String institute);
+        void onError(String message);
+    }
+        private void findAdminInstitute(InstituteCallback callback) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            FirebaseUser user = auth.getCurrentUser();
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+            String currentUserEmail = user.getEmail();
+
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String email = dataSnapshot.child("email").getValue(String.class).toLowerCase();
+                        if (email.equalsIgnoreCase(currentUserEmail)) {
+                            String adminInstitute = dataSnapshot.child("instituteIsrael").getValue(String.class);
+                            callback.onInstituteReceived(adminInstitute);
+                            return;
+                        }
+                    }
+                    callback.onError("Institute not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onError("Error: " + error.getMessage());
+                }
+            });
+        }
+    private void clearFields() {
+        etName.setText("");
+        etEmail.setText("");
+        etCountry.setText("");
+        etCity.setText("");
+        etAInstituteAbroad.setText("");
+        degree.setText("");
+    }
 }
