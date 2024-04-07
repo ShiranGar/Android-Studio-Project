@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/material_dynamic_tertiary90"
     tools:context=".MainActivity">
 
     <Button
@@ -18,10 +19,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Firebase Cloud Storage"
+        android:text="Upload image"
         android:textColor="@color/black"
         android:textSize="26dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
 
     <ImageView
         android:id="@+id/imageView"
@@ -29,38 +31,41 @@
         android:layout_height="113dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="30dp"
-        android:src="@drawable/baseline_add_photo_alternate_24" />
+        android:src="@drawable/baseline_add_photo_alternate_24"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Image Description" />
+        android:text="Image Description"
+        android:layout_gravity="center"/>
 
     <EditText
         android:id="@+id/etDescription"
-        android:layout_width="300dp"
-        android:layout_height="80dp" />
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/showAllBtn"
-        android:layout_width="187dp"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="32dp"
-        android:text="Show All" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/uploadBtn"
-        android:layout_width="190dp"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="168dp"
-        android:text="Upload Image" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/uploadpdf"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/showAllBtn"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/pictures"/>
 
 </LinearLayout>

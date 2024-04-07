@@ -4,14 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragments.UploadPDFFragment"
-    android:gravity="center">
+    android:background="@color/material_dynamic_tertiary90">
+
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/baseline_arrow_back_24" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload PDF"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"/>
 
     <EditText
         android:id="@+id/editText"
@@ -20,7 +30,9 @@
         android:layout_centerInParent="true"
         android:hint="Select file from storage"
         android:textColor="#0000FF"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"/>
 
     <EditText
         android:id="@+id/etCourse"
@@ -28,20 +40,29 @@
         android:layout_height="wrap_content"
         android:hint="Please enter course name"
         android:textColor="#0000FF"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btnUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/etCourse"
         android:layout_centerHorizontal="true"
-        android:text="Upload PDF" />
+        android:background="@drawable/uploadpdf"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"/>
 
 
     <Button
         android:id="@+id/btnRead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retrieve PDF file" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/pdficon"
+        android:text="show files"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:layout_marginTop="40dp"
+        />
 </LinearLayout>

@@ -85,10 +85,10 @@
             android:layout_gravity="center_vertical">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Download"
-                android:id="@+id/btnDownload"/>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/downloadicon"
+                android:id="@+id/btnDownload" />
 
         </LinearLayout>
 

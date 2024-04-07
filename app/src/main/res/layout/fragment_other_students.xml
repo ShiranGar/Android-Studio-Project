@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.OtherStudentsFragment" >
+    tools:context=".Fragments.ShowImagesFragment">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,10 +13,15 @@
             android:id="@+id/btnBack"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/baseline_arrow_back_24"/>
+            android:background="@drawable/baseline_arrow_back_24"
+            android:layout_alignParentTop="true" />
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+</FrameLayout>
